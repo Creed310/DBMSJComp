@@ -3,26 +3,22 @@ const Schema = mongoose.Schema
 
 // Create Schema
 
-const UserSchema = new Schema(
+const BranchSchema = new Schema(
     {
-        name:{
-            type: String,
-            required: true
-        },
-        email:
+        BranchID:
         {
             type: String,
             required: true
         },
-        password: 
+        Branch_Name:
         {
             type: String,
             required: true
         },
-        date: 
+        Branch_City: 
         {
-            type: Date,
-            default: Date.now
+            type: String,
+            required: true
         }
     }
 )
@@ -34,4 +30,4 @@ const UserSchema = new Schema(
 
 
 //module.exports = Module Name = xx
-module.exports = User = mongoose.model("users", UserSchema)
+module.exports = Branch = mongoose.model("branches", BranchSchema)

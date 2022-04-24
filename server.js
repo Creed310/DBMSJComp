@@ -10,7 +10,7 @@ const app = express();
 
 // Bodyparser Middleware - handles incoming request bodies in a middleware before the handlers.
 
-// Middleware functions - have access to request, response objects and next functino
+// Middleware functions - have access to request, response objects and next function
 // like app.get('/', function (req, res, next) { next(); })
 // Here, 'function(req, res, next)' is the middleware function.   
 
@@ -22,6 +22,9 @@ const app = express();
 // app.use(bodyParser.json()) : transforms JSON inputs -> JS-accessible variables under req.body.
 
 // Basically, these two functions parse incoming request bodies in a middleware and allow them to be used as JS-accessible variables. 
+
+// middleware - functions that run between the time the server recieves a request anda the time it sends a response
+// middleware runs in order of which you define it.
 
 app.use(bodyParser.urlencoded(
   {
@@ -38,6 +41,8 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Routes
+// this middleware runs and is called?
+
 app.use("/api/users", users);
 
 
@@ -51,9 +56,9 @@ mongoose.connect(db, {useNewURlParser: true}).then(() => console.log("MongoDB su
 
 // Setting up the port and listening to it. 
 
-const port = 8080
+const port = 3000
 app.listen(port, () => console.log('Server up and running on port', port, '!'));
 
-
+//app.get('URL', (req, res) => {})
 
 

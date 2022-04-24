@@ -5,7 +5,7 @@ const isEmpty = require('is-empty')
 
 // module.exports returns the errors, isvalid boolean
 
-module.exports = function validateRegisterInput(data)
+module.exports = validateRegisterInput = (data) =>
 {
     let errors = {}
 

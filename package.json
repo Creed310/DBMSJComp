@@ -4,9 +4,12 @@
   "description": "DBMS 19BEC0538 J-Component",
   "main": "server.js",
   "scripts": {
+    "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "npm start --prefix client",
+    "proxy": "localhost:3000",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "MIT",

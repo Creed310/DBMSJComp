@@ -9,8 +9,14 @@ const keys = require("../../config/keys");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
-// Load User model
+// Loading models
+
 const User = require("../../models/User")
+const Account = require("../../models/Account")
+const Customer = require("../../models/Customer")
+const Transaction = require("../../models/Transaction")
+const Loan = require("../../models/Loan")
+const Branch = require("../../models/Branch")
 
 //REGISTER ROUTE
 
@@ -47,7 +53,8 @@ router.post("/register", (req, res) => {
         // .save() saves the document to the database
         // res.json() sends a JSON response. 
 
-            bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.genSalt(10, (err, salt) => 
+            {
             bcrypt.hash(newUser.password, salt, (err, hash) => 
             {
                 if (err) throw err;
@@ -66,7 +73,7 @@ router.post("/register", (req, res) => {
 
 // @route POST api/users/login
 // @desc Login user and return JWT token
-// @access Public
+// @access Public 
 
 router.post("/login", (req, res) => {
     // Form validation

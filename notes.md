@@ -2,6 +2,8 @@
 
 https://blog.bitsrc.io/build-a-login-auth-app-with-mern-stack-part-1-c405048e3669
 
+<BACK-END>
+
 - MongoDB UserID: varunraghav.ganesan2019@vitstudent.ac.in
 - MongoDB Password: S
 
@@ -99,3 +101,52 @@ https://blog.bitsrc.io/build-a-login-auth-app-with-mern-stack-part-1-c405048e366
   - if successful, append the token to a Bearer string (remember in our passport.js file, we set opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();)
 
 NOTE: in code, using req.body instead of req.params. it is safer as cannot be seen in URL.
+
+<FRONT-END>
+
+- Set up our frontend using create-react-app
+- Create static components for our Navbar, Landing, Login and Register pages
+- Setup Redux for global state management
+
+* Edit the "scripts" object to the following in our server’s package.json.
+
+1. Edit the root package.json
+
+- "scripts": 
+  {
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+
+* We’ll use concurrently to run both our backend and frontend (client) at the same time. We’ll use npm run dev to run this command later on.
+
+2. Scaffold our client with create-react-app
+
+- create-react-app to set up our client.
+- This will take care of a lot of heavy lifting for us (as opposed to creating a React project from scratch).
+
+> npm i -g create-react-app
+- installs create-react-app globally.
+
+> mkdir client && cd client && create-react-app .
+create a client directory and run create-react-app within it.
+
+3. Change our package.json within our client directory
+- we make requests from React with axios
+- we don’t want to have to do the following in our requests:
+> axios.post(‘http://localhost:8080/api/users/register');
+
+- We want to be able to do the following instead.
+> axios.post('/api/users/register');
+
+- To achieve this, add the following under the "scripts" object in our client's package.json.
+"proxy": "http://localhost:8080",
+
+4. Within client, install the following dependencies using npm
+
+5. Run npm run dev and test if both server and client run concurrently and successfully
+
+6. Clean up our React app by removing unnecessary files and code
