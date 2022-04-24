@@ -24,9 +24,12 @@
     "mongoose": "^6.2.7",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "web-vitals": "^2.1.4"
   }
 }

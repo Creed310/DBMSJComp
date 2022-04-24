@@ -44,8 +44,10 @@ router.post("/register", (req, res) => {
 
             const newCustomer = new Customer(
         {
+            //Customer_ID: req.body.CustomerID,
             MobileNumber: req.body.MobileNumber,
             Password: req.body.Password,
+            Password2: req.body.Password2,
             C_First_Name: req.body.C_First_Name,
             C_Middle_Name: req.body.C_Middle_Name,
             C_Last_Name: req.body.C_Last_Name,
