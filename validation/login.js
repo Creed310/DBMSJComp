@@ -8,26 +8,27 @@ const isEmpty = require("is-empty");
 module.exports = validateLoginInput = (data) =>
 {
   let errors = {};
+  const MNRegex = /^[0]?[789]\d{9}$/;
 
 // Convert empty fields to an empty string so we can use validator functions
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
+  data.MobileNumber = !isEmpty(data.MobileNumber) ? data.MobileNumber : "";
+  data.Password = !isEmpty(data.Password) ? data.Password : "";
 
-// Email checks
+// Mobile Number checks
 
-  if (Validator.isEmpty(data.email)) 
+  if (Validator.isEmpty(data.MobileNumber)) 
   {
-    errors.email = "Email field is required";
+    errors.MobileNumber = "Mobile Number field is required";
   } 
-  else if (!Validator.isEmail(data.email)) 
+  else if (!MNRegex.test(data.MobileNumber))  //FLAG
   {
-    errors.email = "Email is invalid";
+    errors.MobileNumber = "Mobile Number is invalid";
   }
 // Password checks
 
-  if (Validator.isEmpty(data.password)) 
+  if (Validator.isEmpty(data.Password)) 
   {
-    errors.password = "Password field is required";
+    errors.Password = "Password field is required";
   }
 
 return {

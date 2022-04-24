@@ -3,6 +3,8 @@ const Schema = mongoose.Schema
 
 // Create Schema
 
+//User DEMO 
+
 const UserSchema = new Schema(
     {
         name:{
@@ -19,7 +21,7 @@ const UserSchema = new Schema(
             type: String,
             required: true
         },
-        date: 
+        date_of_creation: 
         {
             type: Date,
             default: Date.now

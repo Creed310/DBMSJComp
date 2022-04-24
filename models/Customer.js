@@ -6,11 +6,14 @@ const Schema = mongoose.Schema
 //The new operator lets developers create an instance of a USER-DEFINED OBJECT TYPE
 // or of one of the built-in object types that has a constructor function.
 
+
+//Customer -  User logs in/registers using this data.
+
 const CustomerSchema = new Schema(
     {
         CustomerID:{
             type: String,
-            required: true
+            required: false
         },
         C_First_Name:
         {
@@ -27,7 +30,7 @@ const CustomerSchema = new Schema(
         },
         Aadhar_Number:
         {
-            type: Number,
+            type: String,
             required: true
         },
         Occupation: 
@@ -42,7 +45,12 @@ const CustomerSchema = new Schema(
         },
         MobileNumber:
         {
-            type: Number,
+            type: String,
+            required: true
+        },
+        Password:
+        {
+            type: String,
             required: true
         },
         DoB:
@@ -59,4 +67,4 @@ const CustomerSchema = new Schema(
 //To do so, we pass it into mongoose.model(modelName, schema):
 
 
-module.exports = Customer = mongoose.model('customers', CustomerSchema)
+module.exports = Customer = mongoose.model('customer', CustomerSchema)

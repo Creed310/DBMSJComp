@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const users = require("./routes/api/users");
+const customer = require("./routes/api/customer");
 
 // Initializing the application
 const app = express();
@@ -43,7 +43,7 @@ require("./config/passport")(passport);
 // Routes
 // this middleware runs and is called?
 
-app.use("/api/users", users);
+app.use("/api/customer", customer);
 
 
 // DB configuration.
@@ -56,7 +56,7 @@ mongoose.connect(db, {useNewURlParser: true}).then(() => console.log("MongoDB su
 
 // Setting up the port and listening to it. 
 
-const port = 3000
+const port = 8000
 app.listen(port, () => console.log('Server up and running on port', port, '!'));
 
 //app.get('URL', (req, res) => {})

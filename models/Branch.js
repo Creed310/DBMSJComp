@@ -3,6 +3,8 @@ const Schema = mongoose.Schema
 
 // Create Schema
 
+//Each account linked to a branch
+
 const BranchSchema = new Schema(
     {
         BranchID:
@@ -30,4 +32,4 @@ const BranchSchema = new Schema(
 
 
 //module.exports = Module Name = xx
-module.exports = Branch = mongoose.model("branches", BranchSchema)
+module.exports = Branch = mongoose.model("branch", BranchSchema)

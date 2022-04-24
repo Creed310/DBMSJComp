@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+//Account - This is the account that is created by the customer. 
+
 const AccountSchema = new Schema(
     {
         Account_Number:
@@ -44,4 +46,4 @@ const AccountSchema = new Schema(
     }
 )
 
-module.exports = Account = mongoose.model("accounts", AccountSchema)
+module.exports = Account = mongoose.model("account", AccountSchema)

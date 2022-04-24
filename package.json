@@ -8,7 +8,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "proxy": "localhost:3000",
+    "proxy": "http://localhost:8000",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
@@ -17,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
     "concurrently": "^7.0.0",
+    "create-react-app": "^5.0.1",
     "express": "^4.17.3",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",

@@ -3,7 +3,7 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const mongoose = require("mongoose");
-const User = mongoose.model("users");
+const Customer = mongoose.model("customer");
 const keys = require("../config/keys"); 
 
 //jwt = JSON Web Token
@@ -21,11 +21,11 @@ module.exports = passport => {
         {
 
             //Mongoose - User.findById() used to find a single document by its _id field. 
-            User.findById(jwt_payload.id).then(user =>
+            Customer.findById(jwt_payload.id).then(customer =>
                 {
-                    if(user)
+                    if(customer)
                     {
-                        return done(null, user)
+                        return done(null, customer)
                     }
                     return done(null, false)
                 }

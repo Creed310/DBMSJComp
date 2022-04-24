@@ -64,7 +64,7 @@ router.post("/register", (req, res) => {
             bcrypt.hash(newCustomer.Password, salt, (err, hash) => 
             {
                 if (err) throw err;
-                newCustomer.Password = hash;
+                newCustomer.password = hash;
                 newCustomer.save().then((customer) => 
                 {
                     res.json(customer)
@@ -108,7 +108,7 @@ router.post("/login", (req, res) => {
     // Check password
 
     //FLAGG
-      bcrypt.compare(Password, customer.Password).then(isMatch => 
+      bcrypt.compare(Password, Customer.Password).then(isMatch => 
         {
         if (isMatch) 
         {
@@ -117,7 +117,7 @@ router.post("/login", (req, res) => {
           const payload = 
           {
             id: customer.id,
-            MobileNumber: customer.MobileNumber
+            MobileNumber: customer.Mobile
           };
           
           // Sign token
@@ -135,8 +135,7 @@ router.post("/login", (req, res) => {
               });
             }
           );
-        } 
-        else 
+        } else 
         {
           return res
             .status(400)
