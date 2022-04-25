@@ -15,7 +15,7 @@ const Account = require("../../models/Account")
 const Customer = require("../../models/Customer")
 const Transaction = require("../../models/Transaction")
 const Loan = require("../../models/Loan")
-const Branch = require("../../models/Branch")
+const Branch = require("../../models/Branch");
 
 //REGISTER ROUTE
 
@@ -33,6 +33,8 @@ router.post("/register", (req, res) => {
     //Searches for email in the document which is the same as the email in the POST request.
     //if true, then returns that the email already exists.
     //if false, then creates a new user in the DB.
+    
+    
 
     Customer.findOne({ MobileNumber: req.body.MobileNumber }).then(customer => {
       if (customer) 
@@ -44,8 +46,9 @@ router.post("/register", (req, res) => {
 
             const newCustomer = new Customer(
         {
-            //Customer_ID: req.body.CustomerID,
+           
             MobileNumber: req.body.MobileNumber,
+            CustomerID: req.body.CustomerID,
             Password: req.body.Password,
             Password2: req.body.Password2,
             C_First_Name: req.body.C_First_Name,
@@ -147,4 +150,33 @@ router.post("/login", (req, res) => {
       });
     });
   });
+
+//to view all customers 
+
+  router.get("/view", async (req, res) => {
+    try {
+      const customer = await Customer.find();
+      res.send(customer);
+    } catch (e) {
+      console.log(e);
+      res.status(500).json();
+    }
+  });
+
+  //to view all customers 
+
+router.get("/view/:id", async (req, res) => {
+  try {
+    const data = await Customer.findById(req.body.id);
+    if(data)
+    {
+      res.send(data)
+    }
+  }
+    catch (e) 
+    {
+    console.log(e);
+    res.status(500).json();
+  }
+});
   module.exports = router;

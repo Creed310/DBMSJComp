@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const customer = require("./routes/api/customer");
+const account = require("./routes/api/account");
+const branch = require("./routes/api/branch");
+const path = require('path');
 
 // Initializing the application
 const app = express();
@@ -32,10 +35,13 @@ app.use(bodyParser.urlencoded(
   })
 );
 
+//app.set("view engine", "ejs")
+
 app.use(bodyParser.json());
 
 // Passport middleware
 app.use(passport.initialize());
+
 
 // Passport config
 require("./config/passport")(passport);
@@ -44,7 +50,8 @@ require("./config/passport")(passport);
 // this middleware runs and is called?
 
 app.use("/api/customer", customer);
-
+app.use("/api/account", account);
+app.use("/api/branch", branch);
 
 // DB configuration.
 
@@ -59,6 +66,15 @@ mongoose.connect(db, {useNewURlParser: true}).then(() => console.log("MongoDB su
 const port = 8000
 app.listen(port, () => console.log('Server up and running on port', port, '!'));
 
+app.get("/", (req, res)=>
+{
+  res.sendFile(path.join(__dirname, './views/index.html'));
+})
+
+app.get("/views", (req, res)=>
+{
+  res.sendFile(path.join(__dirname, './views/account.html'));
+})
 //app.get('URL', (req, res) => {})
 
 

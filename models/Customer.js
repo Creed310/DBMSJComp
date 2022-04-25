@@ -11,9 +11,10 @@ const Schema = mongoose.Schema
 
 const CustomerSchema = new Schema(
     {
-        CustomerID:{
+        CustomerID:
+        {
             type: String,
-            required: false
+            required: true
         },
         C_First_Name:
         {

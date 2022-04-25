@@ -10,6 +10,7 @@ module.exports = validateRegisterInput = (data) =>
     let errors = {}
     const MNRegex = /^[0]?[789]\d{9}$/;
     const ANRegex = /^[2-9]{1}[0-9]{3}\s{1}[0-9]{4}\s{1}[0-9]{4}$/;
+    const CIDRegex = /^CUS000([0-9][0-9])$/;
 
     // convert empty FIELDS to empty STRINGS so that can use Validator functions
 
@@ -29,6 +30,7 @@ module.exports = validateRegisterInput = (data) =>
 
     //for login, need MobileNumber, Password, Password2
     //for Register, need all else
+    data.CustomerID = !isEmpty(data.CustomerID) ? data.CustomerID : "";
     data.MobileNumber = !isEmpty(data.MobileNumber) ? data.MobileNumber : "";
     data.Password = !isEmpty(data.Password) ? data.Password : "";
     data.Password2 = !isEmpty(data.Password2) ? data.Password2 : "";
@@ -45,6 +47,14 @@ module.exports = validateRegisterInput = (data) =>
     // Name checks
 
     // Email checks
+    if (Validator.isEmpty(data.CustomerID)) 
+    {
+        errors.CustomerID = "CustomerID field is required";
+    } 
+    else if (!CIDRegex.test(data.CustomerID)) 
+    {
+        errors.CustomerID = "CustomerID is invalid";
+    }
     if (Validator.isEmpty(data.MobileNumber)) 
     {
         errors.MobileNumber = "Mobile Number field is required";

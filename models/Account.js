@@ -12,12 +12,12 @@ const AccountSchema = new Schema(
         },
         Account_Type:
         {
-            type: Date,
+            type: String,
             required: true
         },
         CustomerID:
         {
-            type: Number,
+            type: String,
             required: true
         },
         AoD:
@@ -33,13 +33,13 @@ const AccountSchema = new Schema(
         },
         Balance:
         {
-            type: Number,
+            type: String,
             required: true,
             default: 0
         },
         PIN_Number:
         {
-            type: Number,
+            type: String,
             required: true
             //Assigned by System.
         }
