@@ -8,7 +8,7 @@ const TransactionSchema = new Schema(
         TransactionID:
         {
             type: String,
-            required: true
+            required: false
         },
         DoT:
         {

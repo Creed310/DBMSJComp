@@ -6,6 +6,7 @@ const passport = require("passport");
 const customer = require("./routes/api/customer");
 const account = require("./routes/api/account");
 const branch = require("./routes/api/branch");
+
 const path = require('path');
 
 // Initializing the application

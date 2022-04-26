@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+//.toObject() converts mongoose document to javascript object
+//.toNumber() is an abstract definition of an ECMA script, that's why it worked on the other project,
+// it is not an built-in function
 
 // Load input validation
 
@@ -10,6 +13,9 @@ const validateRegisterAccountInput = require("../../validation/account_register"
 
 const Account = require("../../models/Account")
 const Customer = require("../../models/Customer")
+const Transaction  = require("../../models/Transaction");
+const Loan  = require("../../models/Loan");
+const Branch = require("../../models/Branch");
 
 //REGISTER ROUTE
 
@@ -62,6 +68,223 @@ router.post("/register", (req, res) => {
       }
     });
   });
+
+router.get("/viewall", async (req, res) => {
+    try {
+      const account = await Account.find();
+      res.send(account);
+    } catch (e) {
+      console.log(e);
+      res.status(500).json();
+    }
+  });
+
+router.get("/view/:account_number", async (req, res) => 
+  {
+      const account_number = req.params.account_number;
+      
+      // Find user by email
+      Account.findOne({ Account_Number: account_number }).then((account1) =>
+      {
+          if(account1)
+          {
+              res.send(account1)
+          }
+          else
+          {
+              res.json({error: "There exists no account with that account number"})
+          }
+      })
+  });
+
+router.put("/sendmoney", async (req, res) => 
+{
+  let error = {}
+  try
+  {
+    const Amount = req.body.Amount
+    const Sender_AN = req.body.Sender
+    const Recipient_AN = req.body.Recipient
+
+
+  const SenderMongo = await Account.findOne({ Account_Number: Sender_AN})
+    if(!SenderMongo)
+      {
+        error.sender = "The sender's account does not exist."
+      }
+    
+  const RecipientMongo= await Account.findOne({ Account_Number: Recipient_AN})
+   if(!RecipientMongo)
+   {
+      error.recipient = "The recipient's account does not exist."
+    }
+    
+  let AmountNum = Number(Amount)
+    
+    const SenderMongoJSON = SenderMongo.toObject()
+    let SenderMongoJSONBalance = await Number(SenderMongoJSON.Balance)
+    //let SenderMongoJSONBalanceNum = await Number(SenderMongoJSON.Balance)
+    // let SenderMongoJSONBalanceNum = await SenderMongoJSONBalance.toNumber()
+
+    const RecipientMongoJSON = RecipientMongo.toObject()
+    let RecipientMongoJSONBalance = await Number(RecipientMongoJSON.Balance)
+    //let RecipientMongoJSONBalanceNum = await Number(RecipientMongoJSON.Balance)
+    // let RecipientMongoJSONBalanceNum = await RecipientMongoJSONBalance.toNumber()
+
+    console.log(SenderMongoJSONBalance < AmountNum)
+
+
+  if(SenderMongoJSONBalance < AmountNum)
+    {
+      error.balance = "Insufficient Balance"
+    }
+
+  if(SenderMongoJSONBalance >= AmountNum)
+  {
+      RecipientMongoJSONBalance = RecipientMongoJSONBalance + AmountNum
+      SenderMongoJSONBalance = SenderMongoJSONBalance - AmountNum
+
+      const SenderMongoUpdated = await Account.findOneAndUpdate({ Account_Number: Sender_AN}, {Balance: SenderMongoJSONBalance})
+      const RecipientMongoUpdated = await Account.findOneAndUpdate({ Account_Number: Recipient_AN}, {Balance: RecipientMongoJSONBalance})
+
+      const T_DoT = new Date(Date.now())
+
+      let newTransaction = new Transaction({
+        DoT: T_DoT,
+        T_Amount: Amount,
+        S_Account_Number: Sender_AN,
+        R_Account_Number: Recipient_AN
+      }).save()
+
+      res.json({message: "Transaction Successful"});
+    }
+
+    
+    // Account.findOne({ Account_Number: Sender_AN }).then((sender) =>
+    // {
+    //   if(sender)
+    //   {
+    //     return sender.toObject().Balance
+    //   }
+    //   else
+    //   {
+    //     res.json({error: "The Sender Account Number does not exist"})
+    //   }
+    // })
+
+    // const RecipientMongoBalance = Account.findOne({ Account_Number: Recipient_AN }).then((reciever) =>
+    // {
+    //   if(reciever)
+    //   {
+    //     // console.log(reciever.toObject().Balance)
+    //     return reciever
+    //   }
+    //   else
+    //   {
+    //     res.json({error: "The Reciever Account Number does not exist"})
+    //   }
+    // })
+
+    // let SenderMongoObj = SenderMongo.toObject()
+    // console.log(SenderMongoObj)
+    }
+  catch(e)
+  {
+    res.json(error);
+  }
+});
+
+router.post('/getloan', async (req, res) =>
+{
+  // LoanID:
+  //       {
+  //           type: String,
+  //           required: true
+  //       },
+  //       BranchID:
+  //       {
+  //           type: String,
+  //           required: true
+  //       },
+  //       DoL:
+  //       {
+  //           type: Date,
+  //           required: true
+  //       },
+  //       L_Amount:
+  //       {
+  //           type: Number,
+  //           required: true
+  //       },
+  //       Account_Number:
+  //       {
+  //           type: String,
+  //           required: true
+  //       },
+  //       Loan_Interest:
+  //       {
+  //           type: Number,
+  //           required: true
+  //       }
+
+  let error = {}
+
+  try
+  {
+    const Amount = req.body.Amount
+    const Applicant_AN = req.body.Applicant
+    const BID = req.body.BranchID
+    const Interest = req.body.Interest
+  
+    const ApplicantMongo = await Account.findOne({ Account_Number: Applicant_AN})
+    if(!ApplicantMongo)
+      {
+        error.applicant = "The applicant's account does not exist."
+      }
+    
+    const BranchMongo = await Branch.findOne({ BranchID: BID})
+    if(!BranchMongo)
+    {
+        error.branch = "The branch does not exist."
+    }
+  
+    let AmountNum = Number(Amount)
+    let InterestNum = Number(Interest)
+      
+    const ApplicantMongoJSON = ApplicantMongo.toObject()
+    const BranchMongoJSON = BranchMongo.toObject()
+  
+    let LoanChance = Math.random()<0.5?0:1
+  
+    console.log(LoanChance)
+  
+    if(LoanChance)
+    {
+      const L_DoT = new Date(Date.now())
+  
+      let newLoan = new Loan({
+        BranchID: BID,
+        DoL: L_DoT,
+        L_Amount: AmountNum,
+        Account_Number: Applicant_AN,
+        Loan_Interest: InterestNum + "%"
+      }).save()
+      res.json({message: "Your loan has been granted."});
+    }
+  
+    else if(!LoanChance)
+    {
+      res.json({error_loan: "Your loan has been denied."})
+    }
+  }
+
+  catch(e)
+  {
+    res.json(error);
+  }
+    
+  //console.log(Math.random()<0.5?0:1)
+})
 
 //LOGIN ROUTE
 

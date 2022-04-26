@@ -19,18 +19,22 @@ router.get("/viewall", async (req, res) => {
 
 router.get("/view/:branch_id", async (req, res) => 
 {
-    const branch_id = req.body.branch_id;
+    const branch_id = req.params.branch_id;
     
     // Find user by email
-    Customer.findOne({ branch_id }).then((branch) =>
+    Branch.findOne({ BranchID: branch_id }).then((branch) =>
     {
         if(branch)
         {
             res.send(branch)
         }
+        else
+        {
+            res.json({error: "There exists no branch with that branch ID"})
+        }
     })
-      
 });
+
 //LOGIN ROUTE
 
 // @route POST api/users/login

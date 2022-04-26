@@ -10,7 +10,7 @@ const LoanSchema = new Schema(
         LoanID:
         {
             type: String,
-            required: true
+            required: false
         },
         BranchID:
         {
@@ -24,7 +24,7 @@ const LoanSchema = new Schema(
         },
         L_Amount:
         {
-            type: Number,
+            type: String,
             required: true
         },
         Account_Number:
@@ -34,7 +34,7 @@ const LoanSchema = new Schema(
         },
         Loan_Interest:
         {
-            type: Number,
+            type: String,
             required: true
         }
     }
