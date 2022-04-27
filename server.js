@@ -67,15 +67,17 @@ mongoose.connect(db, {useNewURlParser: true}).then(() => console.log("MongoDB su
 const port = 8000
 app.listen(port, () => console.log('Server up and running on port', port, '!'));
 
-app.get("/", (req, res)=>
-{
-  res.sendFile(path.join(__dirname, './views/index.html'));
-})
+// app.get("/", (req, res)=>
+// {
+//   res.sendFile(path.join(__dirname, './NiceAdmin/users-profile.html'));
+// })
 
-app.get("/views", (req, res)=>
-{
-  res.sendFile(path.join(__dirname, './views/account.html'));
-})
+app.use(express.static('views2'))          
+
+// app.get("/views", (req, res)=>
+// {
+//   res.sendFile(path.join(__dirname, './views/account.html'));
+// })
 //app.get('URL', (req, res) => {})
 
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
+const path = require('path');
 
 // Load input validation
 
@@ -72,7 +73,7 @@ router.post("/register", (req, res) => {
                 newCustomer.Password = hash;
                 newCustomer.save().then((customer) => 
                 {
-                    res.json(customer)
+                    res.sendFile('/views2/login.html', {root: '/Users/varun/JComp/DBMS'})
                 }).catch((err) => 
                 {
                     console.log(err)
@@ -134,10 +135,7 @@ router.post("/login", (req, res) => {
             },
             (err, token) => 
             {
-              res.json({
-                success: true,
-                token: "Bearer " + token
-              });
+              res.sendFile('/views2/customer.html', {root: '/Users/varun/JComp/DBMS'})
             }
           );
         } 
@@ -156,7 +154,7 @@ router.post("/login", (req, res) => {
   router.get("/view", async (req, res) => {
     try {
       const customer = await Customer.find();
-      res.send(customer);
+      res.json(customer)
     } catch (e) {
       console.log(e);
       res.status(500).json();
@@ -165,9 +163,9 @@ router.post("/login", (req, res) => {
 
   //to view all customers 
 
-router.get("/view/:id", async (req, res) => {
+router.get("/view/:mobilenumber", async (req, res) => {
   try {
-    const data = await Customer.findById(req.body.id);
+    const data = await Customer.findById(req.params.mobilenumber);
     if(data)
     {
       res.send(data)

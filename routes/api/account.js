@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Validator = require('validator')
 const isEmpty = require("is-empty");
+const Chart = require("chart.js")
+const path = require('path');
+
 
 //.toObject() converts mongoose document to javascript object
 //.toNumber() is an abstract definition of an ECMA script, that's why it worked on the other project,
@@ -62,7 +65,7 @@ router.post("/register", (req, res) => {
         });
 
         newAccount.save().then(() => {
-          res.send(200).json({
+          res.json({
             message: "Account Created"
           });
         });
@@ -77,7 +80,27 @@ router.get("/view/allaccounts", async (req, res) => {
       res.send(account);
     } catch (e) {
       console.log(e);
-      res.status(500).json();
+      res.status(500).json({error: "No accounts"});
+    }
+  });
+
+  router.get("/view/alltransactions", async (req, res) => {
+    try {
+      const transaction = await Transaction.find();
+      res.send(transaction);
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({error: "No transactions"});
+    }
+  });
+
+  router.get("/view/allloans", async (req, res) => {
+    try {
+      const loan = await Loan.find();
+      res.send(loan);
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({error: "No loans"});
     }
   });
 
@@ -99,7 +122,7 @@ router.get("/view/:account_number", async (req, res) =>
       })
   });
 
-router.put("/sendmoney", async (req, res) => 
+router.post("/sendmoney", async (req, res) => 
 {
   let error = {}
   try

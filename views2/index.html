@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>19BEC0538 - Varun Raghav Ganesan - JComponent</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="jumbotron">
+              <div class="text-center">
+              <h2> 19BEC0538 - J-Component </h2>
+              <p> Secured Banking Transaction Using Virtual Password.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    <br/>
+    <div class = "well">
+        <div class = "text-center">
+            <h2>Register</h2>
+        </div>
+    </div>
+    
+
+    
+    <div class = "well">
+        <div class = "text-center">
+            <form class = text-center method="POST" action="/api/customer/register">
+                <div class = "text-center">
+                <label for="">Enter a CustomerID (Ensure it is in the format [CUS000XX])</label>
+                <input type="text" name="CustomerID" id="CustomerID"><br>
+                <label for="">Enter your Mobile Number</label>
+                <input type="text" name="MobileNumber" id="MobileNumber"><br>
+                <label for="">Password</label>
+                <input type="text" name="Password" id="Password"><br>
+                <label for="">Confirm Password</label>
+                <input type="text" name="Password2" id="Password2"><br>
+                <label for="">Enter your Aadhar Number</label>
+                <input type="text" name="Aadhar_Number" id="Aadhar_Number"><br>
+                <label for="">Enter your DoB</label>
+                <input type="text" name="DoB" id="DoB"><br>
+                <label for="">Enter your First Name</label>
+                <input type="text" name="C_First_Name" id="C_First_Name"><br>
+                <label for="">Enter your Middle Name</label>
+                <input type="text" name="C_Middle_Name" id="C_Middle_Name"><br>
+                <label for="">Enter your Last Name</label>
+                <input type="text" name="C_Last_Name" id="C_Last_Name"><br>
+                <label for="">Enter your City</label>
+                <input type="text" name="City" id="City"><br>
+                <label for="">Enter your Occupation</label>
+                <input type="text" name="Occupation" id="Occupation"><br>
+                <input type="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class = "text-center">
+        <a href="login.html">or Login if returning user.</a></p>
+    </div>
+    
+</body>
+</html>
