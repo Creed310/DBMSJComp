@@ -23,11 +23,14 @@ const CustomerSchema = new Schema(
         },
         C_Middle_Name: 
         {
-            type: String
+            type: String,
+            required: false,
+            defualt: ""
         },
         C_Last_Name: 
         {
-            type: String
+            type: String,
+            required: true
         },
         Aadhar_Number:
         {

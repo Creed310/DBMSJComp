@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const Validator = require('validator')
+const isEmpty = require("is-empty");
 
 //.toObject() converts mongoose document to javascript object
 //.toNumber() is an abstract definition of an ECMA script, that's why it worked on the other project,
@@ -69,7 +71,7 @@ router.post("/register", (req, res) => {
     });
   });
 
-router.get("/viewall", async (req, res) => {
+router.get("/view/allaccounts", async (req, res) => {
     try {
       const account = await Account.find();
       res.send(account);
@@ -194,7 +196,7 @@ router.put("/sendmoney", async (req, res) =>
   }
 });
 
-router.post('/getloan', async (req, res) =>
+router.post('/applyloan', async (req, res) =>
 {
   // LoanID:
   //       {
@@ -285,6 +287,115 @@ router.post('/getloan', async (req, res) =>
     
   //console.log(Math.random()<0.5?0:1)
 })
+
+router.get('/view/:account_number/alltransactions', async (req, res) =>
+{
+  let error = {}
+
+    const account_number = req.params.account_number;
+    const Acc = await Account.findOne({ Account_Number: account_number})
+    if(!Acc)
+    { 
+      res.json({error_account: "No account exists with that account number."})
+    }
+      const trans = await Transaction.find({ S_Account_Number: account_number});
+    if(trans.length == 0)
+    {
+      res.json({error_trans: "No transactions exists from that account number."})
+    }
+    
+    res.send(trans);
+})
+
+router.get('/view/:account_number/allloans', async (req, res) =>
+{
+  let error = {}
+
+    const account_number = req.params.account_number;
+    const Acc = await Account.findOne({ Account_Number: account_number})
+    if(!Acc)
+    { 
+      res.json({error_account: "No account exists with that account number."})
+    }
+      const loans = await Loan.find({ Account_Number: account_number});
+    if(loans.length == 0)
+    {
+      res.json({error_loans: "No loans exists from that account number."})
+    }
+    
+    res.send(loans);
+})
+
+router.post('/updateaccount', async (req, res) =>
+{
+  let error = {}
+
+    const n_account_type = req.body.Type
+    const n_branch_id = req.body.BranchID
+    const deposit = !isEmpty(req.body.deposit) ? (req.body.deposit) : "";
+    const withdraw = !isEmpty(req.body.withdraw) ? (req.body.withdraw) : "";
+    const account_number = req.body.Account_Number;
+
+    const deposit_num = Number(deposit)
+    const withdraw_num = Number(withdraw)
+  
+    const Acc = await Account.findOne({ Account_Number: account_number})
+    if(!Acc)
+    { 
+      res.json({error_account: "No account exists with that account number."})
+    }
+
+    if(!Validator.isEmpty(deposit) && !Validator.isEmpty(withdraw))
+    {
+      res.json({error_amount: "Cannot withdraw and deposit money at the same time."})
+    }
+
+    if (!(n_account_type.toLowerCase() == "savings" || n_account_type.toLowerCase() == "current"))
+    {
+      res.json({error_type: "Invalid account type."})
+    }
+
+    const AccJSON = await Acc.toObject()
+
+    let AccJSONBal = await Number(AccJSON.Balance)
+
+    if(deposit_num>0)
+    {
+      AccJSONBal = AccJSONBal + deposit_num
+    }
+
+    if(withdraw_num>0)
+    {
+      AccJSONBal = AccJSONBal - withdraw_num
+    }
+
+    const AccountUpdated = await Account.findOneAndUpdate({ Account_Number: account_number}, 
+      {
+        Account_Type: n_account_type,
+        BranchID: n_branch_id,
+        Balance: AccJSONBal
+      })
+
+      res.json({message: "Account Updation Successful"});
+})
+
+router.post('/deleteaccount', async (req, res) =>
+{
+  let error = {}
+
+    const account_number = req.body.Account_Number;
+  
+    const Acc = await Account.findOne({ Account_Number: account_number})
+    if(!Acc)
+    { 
+      res.json({error_account: "No account exists with that account number."})
+    }
+
+    const AccountUpdated = await Account.findOneAndDelete({ Account_Number: account_number})
+
+    res.json({message: "Account Deletion Successful"});
+})
+
 
 //LOGIN ROUTE
 

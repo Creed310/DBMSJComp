@@ -179,4 +179,82 @@ router.get("/view/:id", async (req, res) => {
     res.status(500).json();
   }
 });
+
+router.get('/view/:mobile_number/allaccounts', async (req, res) =>
+{
+  let error = {}
+
+    const mobile_number = req.params.mobile_number;
+    const mobno = await Customer.findOne({ MobileNumber: mobile_number})
+    if(!mobno)
+    { 
+      res.json({error_mobno: "No customer exists with that mobile number."})
+    }
+
+    const CustomerJSON = await mobno.toObject()
+    const CustomerJSONCustID = await CustomerJSON.CustomerID
+
+    const acc = await Account.find({ CustomerID: CustomerJSONCustID});
+
+    if(!acc)
+    {
+      res.json({error_account: "No accounts exist for that Customer ID."})
+    }
+    
+    res.send(acc);
+})
+
+
+router.post('/updatecustomer', async (req, res) =>
+{
+  let error = {}
+
+    const Mobile_Number = req.body.MobileNumber
+    const C_First_Name = req.body.C_First_Name
+    const C_Middle_Name = req.body.C_Middle_Name
+    const C_Last_Name = req.body.C_Last_Name
+    const Occupation = req.body.Occupation
+    const City = req.body.City
+    
+    const Cus = await Customer.findOne({ MobileNumber: Mobile_Number})
+    if(!Cus)
+    { 
+      res.json({error_account: "No customer exists with that mobile number."})
+    }
+
+    const CusUpdated = await Customer.findOneAndUpdate({ MobileNumber: Mobile_Number}, 
+      {
+        C_First_Name: C_First_Name,
+        C_Middle_Name: C_Middle_Name,
+        C_Last_Name: C_Last_Name,
+        Occupation: Occupation,
+        City: City
+      })
+
+      res.json({message: "Customer Updation Successful"});
+})
+
+router.post('/deletecustomer', async (req, res) =>
+{
+  let error = {}
+
+    const mobile_number = req.body.Mobile_Number;
+  
+    const Cus = await Customer.findOne({ MobileNumber: mobile_number})
+
+    if(!Cus)
+    { 
+      res.json({error_customer: "No customer exists with that mobile number."})
+    }
+
+    const CusJSON = await Cus.toObject();
+    const CusJSONCustomerID = await CusJSON.CustomerID
+
+    const AccountDel = await Account.findOneAndDelete({ MobileNumber: mobile_number})
+    const CustomerDel = await Customer.deleteMany({ CustomerID: CusJSONCustomerID})
+
+    res.json({message: "Customer and subsequent Accounts deletion successful"});
+})
+
+
   module.exports = router;
